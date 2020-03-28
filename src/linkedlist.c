@@ -9,11 +9,22 @@ typedef struct node
 }node;
 
 node *createLinkedList(int size);
+void displayLinkedList(node *head);
 
 int main(void) {
 
 	node *headLinkedList = NULL;
 	headLinkedList = createLinkedList(5);
+
+	if(headLinkedList == NULL)
+	{
+		return -1;
+	}else
+	{
+		printf("LinkedList: \n");
+		displayLinkedList(headLinkedList);
+	}
+
 
 	return EXIT_SUCCESS;
 }
@@ -58,4 +69,27 @@ node *createLinkedList(int size)
 	}
 
 	return head;
+}
+
+void displayLinkedList(node *head)
+{
+	node *temp = head;
+
+	if(temp == NULL)
+	{
+		printf("Linked list cannot be null!\n");
+		return;
+	}
+
+	do
+	{
+		printf("%d", temp->data);
+		temp = temp->next;
+
+		if(temp != NULL)
+		{
+			printf(" -> ");
+		}
+	}while(temp != NULL);
+	printf("\n");
 }
