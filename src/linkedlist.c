@@ -10,6 +10,7 @@ typedef struct node
 
 node *createLinkedList(int size);
 void displayLinkedList(node *head);
+node* insertSortedNode(int data, node *headLinkedList);
 
 int main(void) {
 
@@ -22,6 +23,14 @@ int main(void) {
 	}else
 	{
 		printf("LinkedList: \n");
+		displayLinkedList(headLinkedList);
+
+		int newNodeValue;
+		printf("\nNew element value: ");
+		fflush(stdout);
+		scanf("%d", &newNodeValue);
+
+		headLinkedList = insertSortedNode(newNodeValue,headLinkedList);
 		displayLinkedList(headLinkedList);
 	}
 
@@ -92,4 +101,49 @@ void displayLinkedList(node *head)
 		}
 	}while(temp != NULL);
 	printf("\n");
+}
+
+//This insert node assume that the linkedlist is already sorted!
+node* insertSortedNode(int data, node *headLinkedList)
+{
+	printf("Inserting %d into linkedlist\n", data);
+	if(headLinkedList == NULL)
+	{
+		printf("Linked list cannot be null!\n");
+		return NULL;
+	}
+
+	node *p = NULL;
+	p = headLinkedList;
+
+	while(p -> next != NULL && (p -> next -> data < data))
+	{
+		p = p -> next;
+	}
+
+	node *newNode = NULL;
+	newNode = (node*)malloc(sizeof(node));
+
+	if(newNode == NULL)
+	{
+		printf("Memory couldn't be allocated!\n");
+		return NULL;
+	}else
+	{
+		newNode -> data = data;
+
+		if(p != headLinkedList || p -> data < data)
+		{
+			node* temp = p -> next;
+			p -> next = newNode;
+			newNode -> next = temp;
+
+			return headLinkedList;
+		}else
+		{
+			newNode -> next = p;
+
+			return newNode;
+		}
+	}
 }
