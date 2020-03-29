@@ -10,7 +10,8 @@ typedef struct node
 
 node *createLinkedList(int size);
 void displayLinkedList(node *head);
-node* insertSortedNode(int data, node *headLinkedList);
+node* insertSortedNode(int data, node *head);
+node* deleteNode(int data, node *head);
 
 int main(void) {
 
@@ -31,6 +32,13 @@ int main(void) {
 		scanf("%d", &newNodeValue);
 
 		headLinkedList = insertSortedNode(newNodeValue,headLinkedList);
+		displayLinkedList(headLinkedList);
+
+		int nodeToRemoveValue;
+		printf("\nElement value to remove: ");
+		fflush(stdout);
+		scanf("%d", &nodeToRemoveValue);
+		headLinkedList = deleteNode(nodeToRemoveValue, headLinkedList);
 		displayLinkedList(headLinkedList);
 	}
 
@@ -104,17 +112,17 @@ void displayLinkedList(node *head)
 }
 
 //This insert node assume that the linkedlist is already sorted!
-node* insertSortedNode(int data, node *headLinkedList)
+node* insertSortedNode(int data, node *head)
 {
 	printf("Inserting %d into linkedlist\n", data);
-	if(headLinkedList == NULL)
+	if(head == NULL)
 	{
 		printf("Linked list cannot be null!\n");
 		return NULL;
 	}
 
 	node *p = NULL;
-	p = headLinkedList;
+	p = head;
 
 	while(p -> next != NULL && (p -> next -> data < data))
 	{
@@ -132,13 +140,13 @@ node* insertSortedNode(int data, node *headLinkedList)
 	{
 		newNode -> data = data;
 
-		if(p != headLinkedList || p -> data < data)
+		if(p != head || p -> data < data)
 		{
 			node* temp = p -> next;
 			p -> next = newNode;
 			newNode -> next = temp;
 
-			return headLinkedList;
+			return head;
 		}else
 		{
 			newNode -> next = p;
@@ -146,4 +154,37 @@ node* insertSortedNode(int data, node *headLinkedList)
 			return newNode;
 		}
 	}
+}
+
+node* deleteNode(int data, node *head)
+{
+	node  *p = NULL;
+	node *temp = NULL;
+	p = head;
+	if  (head->data == data)
+	{
+		head = p -> next;
+		free(p);
+		p = NULL;
+	}else
+	{
+		while((p != NULL) && (p->data != data))
+		{
+			temp = p;
+			p =  p->next;
+		}
+
+		if  (p == NULL)
+		{
+			printf("\nNode with data %d not found... Deletion failed!!\n", data);
+		}else if (p->data == data)
+		{
+			temp->next  =  p->next;
+			free(p);
+			p = NULL;
+		}
+	}
+
+
+	return head;
 }
