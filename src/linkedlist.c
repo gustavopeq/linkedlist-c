@@ -12,6 +12,7 @@ node *createLinkedList(int size);
 void displayLinkedList(node *head);
 node *insertSortedNode(int data, node *head);
 node *insertNodeBegin(int data, node *head);
+node *insertNodeEnd(int data, node *head);
 node *deleteNode(int data, node *head);
 
 int main(void) {
@@ -43,10 +44,17 @@ int main(void) {
 		displayLinkedList(headLinkedList);
 
 		int newNodeBegin;
-		printf("\nNew element value to be inserted on the beginning: ");
+		printf("\nNew element value to be inserted in the beginning: ");
 		fflush(stdout);
 		scanf("%d", &newNodeBegin);
 		headLinkedList = insertNodeBegin(newNodeBegin, headLinkedList);
+		displayLinkedList(headLinkedList);
+
+		int newNodeEnd;
+		printf("\nNew element value to be inserted in the end: ");
+		fflush(stdout);
+		scanf("%d", &newNodeEnd);
+		headLinkedList = insertNodeEnd(newNodeEnd, headLinkedList);
 		displayLinkedList(headLinkedList);
 	}
 
@@ -182,6 +190,36 @@ node *insertNodeBegin(int data, node *head)
 
 	printf("New node with value %d was added in the beginning of the linkedlist\n", data);
 	return newNode;
+}
+
+node *insertNodeEnd(int data, node *head)
+{
+	node *newNode = NULL;
+	newNode = (node*)malloc(sizeof(node));
+
+	if(newNode == NULL)
+	{
+		printf("\nMemory couldn't be allocated for the new node!\n");
+		return head;
+	}
+
+	node *p = NULL;
+	node *temp = NULL;
+	p = head;
+
+	do
+	{
+		temp = p;
+		p = p -> next;
+	}while(p != NULL && p != head);
+
+	newNode -> data = data;
+	newNode -> next = p;
+
+	temp -> next = newNode;
+
+	printf("New node with value %d was added in the end of the linkedlist\n", data);
+	return head;
 }
 
 node* deleteNode(int data, node *head)
