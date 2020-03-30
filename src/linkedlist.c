@@ -10,8 +10,9 @@ typedef struct node
 
 node *createLinkedList(int size);
 void displayLinkedList(node *head);
-node* insertSortedNode(int data, node *head);
-node* deleteNode(int data, node *head);
+node *insertSortedNode(int data, node *head);
+node *insertNodeBegin(int data, node *head);
+node *deleteNode(int data, node *head);
 
 int main(void) {
 
@@ -39,6 +40,13 @@ int main(void) {
 		fflush(stdout);
 		scanf("%d", &nodeToRemoveValue);
 		headLinkedList = deleteNode(nodeToRemoveValue, headLinkedList);
+		displayLinkedList(headLinkedList);
+
+		int newNodeBegin;
+		printf("\nNew element value to be inserted on the beginning: ");
+		fflush(stdout);
+		scanf("%d", &newNodeBegin);
+		headLinkedList = insertNodeBegin(newNodeBegin, headLinkedList);
 		displayLinkedList(headLinkedList);
 	}
 
@@ -154,6 +162,26 @@ node* insertSortedNode(int data, node *head)
 			return newNode;
 		}
 	}
+}
+
+//Insert a new node in the beginning of the linkedList. Consequently, the head becomes the new node.
+node *insertNodeBegin(int data, node *head)
+{
+	node *newNode = NULL;
+	newNode = (node*)malloc(sizeof(node));
+
+	if(newNode == NULL)
+	{
+		printf("\nMemory couldn't be allocated for the new node!\n");
+		return head;
+	}
+
+	newNode -> data = data;
+	newNode -> next = head;
+
+
+	printf("New node with value %d was added in the beginning of the linkedlist\n", data);
+	return newNode;
 }
 
 node* deleteNode(int data, node *head)
